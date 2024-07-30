@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Loss Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { padding-top: 20px; }
+        .form-group { margin-bottom: 15px; }
+        #chart { width: 100%; height: 300px; }
+        .custom-button {
+            background: linear-gradient(145deg, #ff4444, #cc0000);
+            border: none;
+            color: white;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 
+                        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .custom-button:hover {
+            background: linear-gradient(145deg, #ff4444, #dd0000);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), 
+                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .custom-button:active {
+            background: linear-gradient(145deg, #cc0000, #aa0000);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 
+                        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">Time Loss Calculator</h1>
+        
+        <div class="row">
+            <!-- Input form column (1/3 width) -->
+            <div class="col-md-4">
+                <form id="calculatorForm">
+                    <div class="form-group">
+                        <label for="maxSpeed">Maximum Speed:</label>
+                        <input type="number" class="form-control" id="maxSpeed" required min="1" value="120">
+                    </div>
+                    <div class="form-group">
+                        <label for="stepSize">Step Size:</label>
+                        <input type="number" class="form-control" id="stepSize" required min="1" value="10">
+                    </div>
+                    <div class="form-group">
+                        <label for="unit">Unit:</label>
+                        <select class="form-control" id="unit">
+                            <option value="km/h">km/h</option>
+                            <option value="mph">mph</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3 custom-button">Calculate</button>
+                </form>
+            </div>
+            
+            <!-- Chart column (2/3 width) -->
+            <div class="col-md-8">
+                <canvas id="chart"></canvas>
+            </div>
+        </div>
+
+        <!-- Results table (full width) -->
+        <div id="results" class="mt-4">
+            <h2>Results</h2>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Speed</th>
+                            <th>Time Loss</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let chart = null;
+
+        document.getElementById('calculatorForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            calculateTimeLoss();
+        });
+
+        function calculateTimeLoss() {
+            const maxSpeed = parseFloat(document.getElementById('maxSpeed').value);
+            const stepSize = parseFloat(document.getElementById('stepSize').value);
+            const unit = document.getElementById('unit').value;
+
+            if (maxSpeed <= 0 || stepSize <= 0) {
+                alert('Please enter valid positive numbers for Maximum Speed and Step Size.');
+                return;
+            }
+
+            const baseDistance = maxSpeed; // Distance traveled in 1 hour at max speed
+            const results = [];
+
+            for (let speed = maxSpeed; speed > 0; speed -= stepSize) {
+                const timeAtCurrentSpeed = baseDistance / speed;
+                const timeLoss = (timeAtCurrentSpeed - 1) * 60; // Convert to minutes
+                const timeLossMinutes = Math.floor(timeLoss);
+                const timeLossSeconds = Math.round((timeLoss - timeLossMinutes) * 60);
+                
+                results.push({
+                    speed: speed.toFixed(1),
+                    timeLoss: `${timeLossMinutes}m ${timeLossSeconds}s`,
+                    timeLossMinutes: timeLossMinutes + timeLossSeconds / 60
+                });
+            }
+
+            displayResults(results, unit);
+            createChart(results, unit);
+        }
+
+        function displayResults(results, unit) {
+            const tbody = document.getElementById('resultsBody');
+            tbody.innerHTML = '';
+            
+            results.forEach(result => {
+                const row = tbody.insertRow();
+                row.insertCell(0).textContent = `${result.speed} ${unit}`;
+                row.insertCell(1).textContent = result.timeLoss;
+            });
+
+            document.getElementById('results').style.display = 'block';
+        }
+
+        function createChart(results, unit) {
+            const ctx = document.getElementById('chart').getContext('2d');
+            
+            if (chart) {
+                chart.destroy();
+            }
+
+            const speeds = results.map(r => parseInt(r.speed, 10));
+            const timeLosses = results.map(r => r.timeLossMinutes);
+
+            chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: speeds,
+                    datasets: [
+                    {
+                        label: 'Trend Line',
+                        data: timeLosses,
+                        type: 'line',
+                        fill: false,
+                        backgroundColor: '#cc0000',
+                        borderColor: '#cc000033',
+                        tension: 0.1
+                    },    
+                    
+                    {
+                        label: 'Time Loss (minutes)',
+                        data: timeLosses,
+                        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: `Speed (${unit})`
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Time Loss (minutes)'
+                            },
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        // Execute the calculation on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            calculateTimeLoss();
+        });
+    </script>
+</body>
+</html>
