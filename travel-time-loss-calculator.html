@@ -56,6 +56,10 @@
                             <option value="mph">mph</option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label for="distance">Distance Driven (optional):</label>
+                        <input type="number" class="form-control" id="distance" min="1" placeholder="Enter distance">
+                    </div>
                     <button type="submit" class="btn btn-primary mt-3 custom-button">Calculate</button>
                 </form>
             </div>
@@ -95,18 +99,19 @@
             const maxSpeed = parseFloat(document.getElementById('maxSpeed').value);
             const stepSize = parseFloat(document.getElementById('stepSize').value);
             const unit = document.getElementById('unit').value;
+            const distanceInput = document.getElementById('distance').value;
+            const distance = distanceInput ? parseFloat(distanceInput) : maxSpeed;
 
-            if (maxSpeed <= 0 || stepSize <= 0) {
-                alert('Please enter valid positive numbers for Maximum Speed and Step Size.');
+            if (maxSpeed <= 0 || stepSize <= 0 || distance <= 0) {
+                alert('Please enter valid positive numbers for Maximum Speed, Step Size, and Distance.');
                 return;
             }
 
-            const baseDistance = maxSpeed; // Distance traveled in 1 hour at max speed
             const results = [];
 
             for (let speed = maxSpeed; speed > 0; speed -= stepSize) {
-                const timeAtCurrentSpeed = baseDistance / speed;
-                const timeLoss = (timeAtCurrentSpeed - 1) * 60; // Convert to minutes
+                const timeAtCurrentSpeed = distance / speed;
+                const timeLoss = (timeAtCurrentSpeed - (distance / maxSpeed)) * 60; // Convert to minutes
                 const timeLossMinutes = Math.floor(timeLoss);
                 const timeLossSeconds = Math.round((timeLoss - timeLossMinutes) * 60);
                 
