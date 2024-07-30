@@ -1,5 +1,7 @@
 # Time Loss Calculator
 
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://d33pk3rn3l.github.io/travel-time-loss-calculator/travel-time-loss-calculator.html)
+
 A simple web-based calculator to estimate the time loss incurred when driving at various speeds, compared to driving at a maximum speed. This tool helps you understand how much time you lose when you decrease your driving speed in increments of 10 km/h.
 
 ## Motivation
