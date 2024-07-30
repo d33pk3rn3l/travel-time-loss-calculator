@@ -2,6 +2,14 @@
 
 A simple web-based calculator to estimate the time loss incurred when driving at various speeds, compared to driving at a maximum speed. This tool helps you understand how much time you lose when you decrease your driving speed in increments of 10 km/h.
 
+## Motivation
+
+I built the Time Loss Calculator as a hobby project to help drivers see the real impact of their speed choices on travel time and fuel efficiency. The idea came from research showing how driving faster significantly reduces fuel efficiency. For instance, speeding from 65 mph to 75 mph can drop your fuel efficiency by up to 17% due to increased aerodynamic drag【16†source】【18†source】. On the flip side, slowing down from 65 mph to 60 mph can improve your fuel economy by about 9%, saving money and reducing emissions【18†source】.
+
+This tool visualizes the trade-off between speed and time loss, helping you make smarter driving decisions. It's all about finding that sweet spot where you save fuel without adding too much travel time. I wanted a simple, web-based solution where you could quickly see how much time you lose when you reduce your speed in 10 km/h increments, making it easy to understand and practical for everyday use.
+
+For more insights into the relationship between driving speed, fuel economy, and cost savings, check out studies from [FuelEconomy.gov](https://www.fueleconomy.gov) and the [Automotive Research Center](https://www.ace.aaa.com).
+
 ## Features
 
 - **User-friendly Interface**: Input your maximum driving speed and get instant results.
@@ -26,15 +34,6 @@ If you enter a maximum speed of 120 km/h, the calculator will show you the time 
 | 80           | 30 minutes and 0 seconds   |
 
 ## Getting Started
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/time-loss-calculator.git
-   cd time-loss-calculator
-   ```
-2. Open `index.html` in your web browser.
-
-### Live Demo
 
 Check out the live demo: [Time Loss Calculator](https://d33pk3rn3l.github.io/time-loss-calculator/)
 
