@@ -8,7 +8,7 @@ I built the Time Loss Calculator as a hobby project to help drivers see the real
 
 This tool visualizes the trade-off between speed and time loss, helping you make smarter driving decisions. It's all about finding that sweet spot where you save fuel without adding too much travel time. I wanted a simple, web-based solution where you could quickly see how much time you lose when you reduce your speed in 10 km/h increments, making it easy to understand and practical for everyday use.
 
-For more insights into the relationship between driving speed, fuel economy, and cost savings, check out studies from [FuelEconomy.gov](https://www.fueleconomy.gov) and the [Automotive Research Center](https://www.ace.aaa.com).
+For more insights into the relationship between driving speed, fuel economy, and cost savings, check out [FuelEconomy.gov](https://www.fueleconomy.gov) and [Energy Efficient Driving](https://en.wikipedia.org/wiki/Energy-efficient_driving#Maintaining_an_efficient_speed).
 
 ## Features
 
@@ -35,7 +35,7 @@ If you enter a maximum speed of 120 km/h, the calculator will show you the time 
 
 ## Getting Started
 
-Check out the live demo: [Time Loss Calculator](https://d33pk3rn3l.github.io/time-loss-calculator/)
+Check out the live demo: [Time Loss Calculator](https://d33pk3rn3l.github.io/travel-time-loss-calculator/travel-time-loss-calculator.html)
 
 ## Contributing
 
